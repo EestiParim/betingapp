@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -42,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
-            android:text="-"
+            android:text="@string/separator"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +53,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="4dp"
-            android:text="Paris"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/team1Actual"
@@ -66,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="Chelsea"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/team2Actual"
@@ -78,7 +75,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="9"
             app:layout_constraintStart_toEndOf="@+id/secondSeperator"
             app:layout_constraintTop_toBottomOf="@+id/seperator" />
 
@@ -89,7 +85,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="-"
+            android:text="@string/separator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/seperator" />
@@ -100,7 +96,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:text="9"
             app:layout_constraintEnd_toStartOf="@+id/secondSeperator"
             app:layout_constraintTop_toBottomOf="@+id/seperator" />
     </android.support.constraint.ConstraintLayout>

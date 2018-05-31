@@ -1,7 +1,6 @@
 package com.betting.tonis.betting_app.main;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,7 +26,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String dataURL = "http://www.mocky.io/v2/5b0702b42f0000172bc61fe3";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
@@ -38,53 +36,43 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         listItems = new ArrayList<>();
 
-        recyclerView = (RecyclerView) findViewById(R.id.result_list);
+        recyclerView = findViewById(R.id.result_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         loadProducts();
 
         Button resultsButton = findViewById(R.id.restart_btn);
-        resultsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ResultsActivity.class);
-                i.putExtra("ITEMLIST", (Serializable) listItems);
-                startActivity(i);
-            }
+        resultsButton.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, ResultsActivity.class);
+            i.putExtra("ITEMLIST", (Serializable) listItems);
+            startActivity(i);
         });
 
     }
 
     private void loadProducts() {
+        String dataURL = "http://www.mocky.io/v2/5b0702b42f0000172bc61fe3";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, dataURL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject bets = new JSONObject(response);
-                            JSONArray teams = bets.getJSONArray("matches");
-                            Log.d("responsestring", response);
-                            for (int i = 0; i < teams.length(); i++){
-                                JSONObject betsObject = teams.getJSONObject(i);
-                                String team1Name = betsObject.getString("team1");
-                                String team2Name = betsObject.getString("team2");
+                response -> {
+                    try {
+                        JSONObject bets = new JSONObject(response);
+                        JSONArray teams = bets.getJSONArray("matches");
+                        Log.d("responsestring", response);
+                        for (int i = 0; i < teams.length(); i++) {
+                            JSONObject betsObject = teams.getJSONObject(i);
+                            String team1Name = betsObject.getString("team1");
+                            String team2Name = betsObject.getString("team2");
 
-                                ListItem listItem = new ListItem(team1Name, team2Name);
-                                listItems.add(listItem);
-                            }
-
-                            adapter = new GamesListAdapter(listItems, MainActivity.this);
-                            recyclerView.setAdapter(adapter);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            ListItem listItem = new ListItem(team1Name, team2Name);
+                            listItems.add(listItem);
                         }
+
+                        adapter = new GamesListAdapter(listItems, MainActivity.this);
+                        recyclerView.setAdapter(adapter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                }, error -> Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show());
         Volley.newRequestQueue(this).add(stringRequest);
     }
 

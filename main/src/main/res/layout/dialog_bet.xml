@@ -28,7 +28,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="0"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintBottom_toTopOf="@+id/score2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +42,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
-        android:text="2"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintBottom_toTopOf="@+id/team2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,6 +69,7 @@
         android:src="@drawable/baseline_add_black_18dp"
         app:layout_constraintBottom_toBottomOf="@+id/score1"
         app:layout_constraintStart_toEndOf="@+id/score1"
+        android:contentDescription="@string/add_points"
         app:layout_constraintTop_toTopOf="@+id/score1" />
 
     <ImageButton
@@ -81,6 +80,7 @@
         android:src="@drawable/baseline_add_black_18dp"
         app:layout_constraintBottom_toBottomOf="@+id/score2"
         app:layout_constraintStart_toEndOf="@+id/score2"
+        android:contentDescription="@string/add_points"
         app:layout_constraintTop_toTopOf="@+id/score2" />
 
     <ImageButton
@@ -91,6 +91,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/score1"
         app:layout_constraintEnd_toStartOf="@+id/score1"
         app:layout_constraintTop_toTopOf="@+id/score1"
+        android:contentDescription="@string/remove_points"
         app:srcCompat="@drawable/baseline_remove_black_18dp" />
 
     <ImageButton
@@ -101,6 +102,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/score2"
         app:layout_constraintEnd_toStartOf="@+id/score2"
         app:layout_constraintTop_toTopOf="@+id/score2"
+        android:contentDescription="@string/remove_points"
         app:srcCompat="@drawable/baseline_remove_black_18dp" />
 
     <Button

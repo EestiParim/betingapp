@@ -46,17 +46,17 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView teamOneActual;
-        public TextView teamTwoActual;
-        public TextView textViewHead;
-        public TextView textViewDesc;
-        public TextView teamOnePrediction;
-        public TextView teamTwoPrediction;
+        final TextView teamOneActual;
+        final TextView teamTwoActual;
+        final TextView textViewHead;
+        final TextView textViewDesc;
+        final TextView teamOnePrediction;
+        final TextView teamTwoPrediction;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-            textViewHead = (TextView) itemView.findViewById(R.id.team1Name);
-            textViewDesc = (TextView) itemView.findViewById(R.id.team2Name);
+            textViewHead = itemView.findViewById(R.id.team1Name);
+            textViewDesc = itemView.findViewById(R.id.team2Name);
             teamOnePrediction = itemView.findViewById(R.id.team1Prediction);
             teamTwoPrediction = itemView.findViewById(R.id.team2Prediction);
             teamOneActual = itemView.findViewById(R.id.team1Actual);

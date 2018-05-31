@@ -2,10 +2,10 @@ package com.betting.tonis.betting_app.main;
 
 import java.io.Serializable;
 
-public class ListItem implements Serializable {
-    private String hash;
-    private String team1Name;
-    private String team2Name;
+class ListItem implements Serializable {
+    private final String hash;
+    private final String team1Name;
+    private final String team2Name;
 
     private int team1pScore;
     private int team2pScore;

@@ -4,4 +4,7 @@
     <string name="enter">Enter</string>
     <string name="Results">results</string>
     <string name="Restart">Restart</string>
+    <string name="add_points">add points</string>
+    <string name="remove_points">remove points</string>
+    <string name="separator">-</string>
 </resources>
