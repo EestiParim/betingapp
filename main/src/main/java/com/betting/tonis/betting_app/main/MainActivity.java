@@ -1,10 +1,13 @@
 package com.betting.tonis.betting_app.main;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -31,22 +34,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        listItems = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.games_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        listItems = new ArrayList<>();
-
-/*        for (int i = 0; i <= 10; i++){
-            ListItem listItem = new ListItem(
-                    "heading" + (i+1),
-                    "Lorem ipsum dummy test"
-            );
-            listItems.add(listItem);
-        }*/
-
         loadProducts();
+
+        Button resultsButton = findViewById(R.id.results_btn);
+        resultsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
+            }
+        });
 
     }
 
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject bets = new JSONObject(response);
                             JSONArray teams = bets.getJSONArray("matches");
-                            Log.d("responsestring", response.toString());
+                            Log.d("responsestring", response);
                             for (int i = 0; i < teams.length(); i++){
                                 JSONObject betsObject = teams.getJSONObject(i);
                                 String team1Name = betsObject.getString("team1");

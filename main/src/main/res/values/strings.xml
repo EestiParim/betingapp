@@ -1,1 +1,6 @@
-<resources></resources>
+<resources>
+    <string name="team_two">Team 2</string>
+    <string name="team_one">Team 1</string>
+    <string name="enter">Enter</string>
+    <string name="Results">results</string>
+</resources>

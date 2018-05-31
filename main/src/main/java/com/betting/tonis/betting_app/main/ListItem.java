@@ -5,8 +5,8 @@ public class ListItem {
     private String team2Name;
 
     private int team1pScore;
-
     private int team2pScore;
+
     public ListItem(String team1Name, String team2Name){
         this.team1Name = team1Name;
         this.team2Name = team2Name;
