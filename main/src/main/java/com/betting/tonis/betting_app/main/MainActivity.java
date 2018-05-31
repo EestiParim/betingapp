@@ -1,6 +1,7 @@
 package com.betting.tonis.betting_app.main;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,16 +38,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         listItems = new ArrayList<>();
 
-        recyclerView = (RecyclerView) findViewById(R.id.games_list);
+        recyclerView = (RecyclerView) findViewById(R.id.result_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         loadProducts();
 
-        Button resultsButton = findViewById(R.id.results_btn);
+        Button resultsButton = findViewById(R.id.restart_btn);
         resultsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
+                Intent i = new Intent(MainActivity.this, ResultsActivity.class);
+                i.putExtra("ITEMLIST", (Serializable) listItems);
+                startActivity(i);
             }
         });
 
