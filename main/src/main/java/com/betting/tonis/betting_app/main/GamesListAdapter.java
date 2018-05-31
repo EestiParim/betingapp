@@ -1,6 +1,8 @@
 package com.betting.tonis.betting_app.main;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,6 +42,28 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
             @Override
             public void onClick(View v) {
                 Log.d("TAG","CLICKED ON: " + listItem );
+                // 1. Instantiate an AlertDialog.Builder with its constructor
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+// 2. Chain together various setter methods to set the dialog characteristics
+                builder.setMessage("testmessage")
+                        .setTitle("testtitle");
+
+// 3. Get the AlertDialog from create()
+                AlertDialog dialog = builder.create();
+
+                builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                    }
+                });
+                builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+                builder.show();
             }
         });
     }
@@ -60,4 +84,6 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
             textViewDesc = (TextView) itemView.findViewById(R.id.team2Name);
         }
     }
+
+
 }
