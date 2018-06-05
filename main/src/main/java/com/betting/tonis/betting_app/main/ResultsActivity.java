@@ -1,6 +1,7 @@
 package com.betting.tonis.betting_app.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +30,8 @@ public class ResultsActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         setContentView(R.layout.activity_results);
 
         listItems = new ArrayList<>();
@@ -41,8 +43,33 @@ public class ResultsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         loadProducts();
 
+        if ((bundle != null)
+                && (bundle.getSerializable("ITEMLIST") != null)) {
+            listItems = (List<ListItem>) bundle.getSerializable("ITEMLIST");
+        }
+
         Button restartButton = findViewById(R.id.restart_btn);
         restartButton.setOnClickListener(v -> startActivity(new Intent(ResultsActivity.this, MainActivity.class)));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences prefs = getSharedPreferences("X", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("lastActivity", getClass().getName());
+        editor.commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        state.putSerializable("ITEMLIST", (Serializable) listItems);
+    }
+
+    public List<ListItem> getListItems() {
+        return listItems;
     }
 
     private void loadProducts() {
@@ -60,6 +87,7 @@ public class ResultsActivity extends AppCompatActivity {
                             int team1Score = (betsObject.getInt("team1_points"));
                             int team2Score = betsObject.getInt("team2_points");
                             String hash = String.valueOf((team1Name + team2Name).hashCode());
+
 
                             ListItem matchingBet = listItems.stream()
                                     .filter(p -> p.getHash().equals(hash))

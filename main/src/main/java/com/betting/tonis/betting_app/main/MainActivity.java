@@ -50,8 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     private void loadProducts() {
         String dataURL = "http://www.mocky.io/v2/5b0702b42f0000172bc61fe3";
+        String dataURLBad = "http://www.mocky.io/v2/5b10c5fb2f0000770034f0ef";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, dataURL,
                 response -> {
                     try {
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }, error -> Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show());
+                }, error -> Toast.makeText(MainActivity.this, error.getMessage() + "PLEASE CONTACT SUPPORT", Toast.LENGTH_LONG).show());
         Volley.newRequestQueue(this).add(stringRequest);
     }
 

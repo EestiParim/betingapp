@@ -20,9 +20,7 @@
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity android:name=".ResultsActivity">
@@ -36,6 +34,14 @@
                     android:host="tonis.betting.com"
                     android:pathPattern="/.*"
                     android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Dispatcher">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
