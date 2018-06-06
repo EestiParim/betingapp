@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,39 +37,63 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("X", MODE_PRIVATE);
         settings.edit().clear().apply();
 
+        Intent i = getIntent();
+        gamesList = (List<ListItem>) i.getSerializableExtra("ITEMLIST");
+        loadProducts();
+
+
+
         recyclerView = findViewById(R.id.result_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        loadProducts();
 
         Button resultsButton = findViewById(R.id.restart_btn);
         resultsButton.setOnClickListener(v -> {
-            Intent i = new Intent(MainActivity.this, ResultsActivity.class);
-            i.putExtra("ITEMLIST", (Serializable) gamesList);
-            startActivity(i);
+            Intent mIntent = new Intent(MainActivity.this, ResultsActivity.class);
+            if (gamesList.stream().anyMatch(ListItem::isScoreSet)) {
+                mIntent.putExtra("ITEMLIST", (Serializable) gamesList);
+                startActivity(mIntent);
+            } else {
+                Toast.makeText(MainActivity.this, "You need to place bet before you can see results", Toast.LENGTH_LONG).show();
+            }
         });
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveData();
+    }
 
+    private void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("X", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("lastActivity", getClass().getName());
+        Gson gson = new Gson();
+        String json = gson.toJson(gamesList);
+        editor.putString("gamesList", json);
+        editor.apply();
+    }
     private void loadProducts() {
         String dataURL = "http://www.mocky.io/v2/5b0702b42f0000172bc61fe3";
         String dataURLBad = "http://www.mocky.io/v2/5b10c5fb2f0000770034f0ef";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, dataURL,
                 response -> {
                     try {
-                        JSONObject bets = new JSONObject(response);
-                        JSONArray teams = bets.getJSONArray("matches");
-                        Log.d("responsestring", response);
-                        for (int i = 0; i < teams.length(); i++) {
-                            JSONObject betsObject = teams.getJSONObject(i);
-                            String team1Name = betsObject.getString("team1");
-                            String team2Name = betsObject.getString("team2");
+                        if (gamesList.isEmpty()) {
+                            JSONObject bets = new JSONObject(response);
+                            JSONArray teams = bets.getJSONArray("matches");
+                            Log.d("responsestring", response);
+                            for (int i = 0; i < teams.length(); i++) {
+                                JSONObject betsObject = teams.getJSONObject(i);
+                                String team1Name = betsObject.getString("team1");
+                                String team2Name = betsObject.getString("team2");
 
-                            ListItem listItem = new ListItem(team1Name, team2Name);
-                            gamesList.add(listItem);
+                                ListItem listItem = new ListItem(team1Name, team2Name);
+                                gamesList.add(listItem);
+                            }
                         }
-
                         adapter = new GamesListAdapter(gamesList, MainActivity.this);
                         recyclerView.setAdapter(adapter);
                     } catch (JSONException e) {

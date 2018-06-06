@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Dispatcher extends Activity {
@@ -44,7 +45,7 @@ public class Dispatcher extends Activity {
         }.getType();
         mGamesList = gson.fromJson(json, type);
         if (mGamesList == null) {
-            activityClass = MainActivity.class;
+            mGamesList = new ArrayList<>();
         }
     }
 }

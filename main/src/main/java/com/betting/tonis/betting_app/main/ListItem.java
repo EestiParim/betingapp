@@ -5,7 +5,7 @@ class ListItem implements Serializable {
     private final String hash;
     private final String team1Name;
     private final String team2Name;
-    private boolean isScoreset;
+    private boolean scoreSet;
 
     private int team1pScore;
     private int team2pScore;
@@ -16,15 +16,15 @@ class ListItem implements Serializable {
         this.team1Name = team1Name;
         this.team2Name = team2Name;
         this.hash = String.valueOf((team1Name + team2Name).hashCode());
-        this.isScoreset = false;
+        this.scoreSet = false;
     }
 
-    public boolean isScoreset() {
-        return isScoreset;
+    public boolean isScoreSet() {
+        return scoreSet;
     }
 
     public void setScoreset() {
-        isScoreset = true;
+        scoreSet = true;
     }
 
     public String getTeam1Name() {

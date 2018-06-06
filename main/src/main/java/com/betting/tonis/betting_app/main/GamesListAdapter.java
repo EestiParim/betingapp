@@ -39,7 +39,7 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
 
         holder.team1Name.setText(listItem.getTeam1Name());
         holder.team2Name.setText(listItem.getTeam2Name());
-        if (listItem.isScoreset()) {
+        if (listItem.isScoreSet()) {
             holder.teamOnePrediction.setText(String.valueOf(listItem.getTeam1pScore()));
             holder.teamTwoPrediction.setText(String.valueOf(listItem.getTeam2pScore()));
         }
