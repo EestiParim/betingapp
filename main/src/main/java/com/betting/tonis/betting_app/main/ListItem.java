@@ -1,11 +1,11 @@
 package com.betting.tonis.betting_app.main;
 
 import java.io.Serializable;
-
 class ListItem implements Serializable {
     private final String hash;
     private final String team1Name;
     private final String team2Name;
+    private boolean isScoreset;
 
     private int team1pScore;
     private int team2pScore;
@@ -16,6 +16,15 @@ class ListItem implements Serializable {
         this.team1Name = team1Name;
         this.team2Name = team2Name;
         this.hash = String.valueOf((team1Name + team2Name).hashCode());
+        this.isScoreset = false;
+    }
+
+    public boolean isScoreset() {
+        return isScoreset;
+    }
+
+    public void setScoreset() {
+        isScoreset = true;
     }
 
     public String getTeam1Name() {

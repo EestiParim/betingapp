@@ -11,16 +11,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.ViewHolder>{
 
-    private final List<ListItem> listItems;
+    private final List<ListItem> gamesList;
     private final Context context;
 
-    public GamesListAdapter(List<ListItem> listItems, Context context) {
-        this.listItems = listItems;
+    public GamesListAdapter(List<ListItem> gamesList, Context context) {
+        this.gamesList = gamesList;
         this.context = context;
     }
 
@@ -34,14 +35,16 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final ListItem listItem = listItems.get(position);
+        final ListItem listItem = gamesList.get(position);
 
-        holder.textViewHead.setText(listItem.getTeam1Name());
-        holder.textViewDesc.setText(listItem.getTeam2Name());
-        holder.teamOnePrediction.setText(String.valueOf(listItem.getTeam1pScore()));
-        holder.teamTwoPrediction.setText(String.valueOf(listItem.getTeam2pScore()));
+        holder.team1Name.setText(listItem.getTeam1Name());
+        holder.team2Name.setText(listItem.getTeam2Name());
+        if (listItem.isScoreset()) {
+            holder.teamOnePrediction.setText(String.valueOf(listItem.getTeam1pScore()));
+            holder.teamTwoPrediction.setText(String.valueOf(listItem.getTeam2pScore()));
+        }
 
-        holder.textViewHead.setOnClickListener(v -> {
+        holder.team1Name.setOnClickListener(v -> {
             Log.d("TAG", "CLICKED ON: " + listItem);
             final int[] team1Score = {listItem.getTeam1pScore()};
             final int[] team2Score = {listItem.getTeam2pScore()};
@@ -68,7 +71,11 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
                 teamOneScore.setText(String.valueOf(team1Score[0]));
             });
             removeTeam1.setOnClickListener(v12 -> {
-                team1Score[0]--;
+                if (team1Score[0] > 0) {
+                    team1Score[0]--;
+                } else {
+                    Toast.makeText(context, "Score can not be nagative", Toast.LENGTH_LONG).show();
+                }
                 teamOneScore.setText(String.valueOf(team1Score[0]));
             });
             addTeam2.setOnClickListener(v13 -> {
@@ -76,12 +83,17 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
                 teamTwoScore.setText(String.valueOf(team2Score[0]));
             });
             removeTeam2.setOnClickListener(v14 -> {
-                team2Score[0]--;
+                if (team2Score[0] > 0) {
+                    team2Score[0]--;
+                } else {
+                    Toast.makeText(context, "Score can not be nagative", Toast.LENGTH_LONG).show();
+                }
                 teamTwoScore.setText(String.valueOf(team2Score[0]));
             });
             submitScores.setOnClickListener(v15 -> {
                 listItem.setTeam1pScore(team1Score[0]);
                 listItem.setTeam2pScore(team2Score[0]);
+                listItem.setScoreset();
                 notifyDataSetChanged();
                 dialog.dismiss();
             });
@@ -91,20 +103,20 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
 
     @Override
     public int getItemCount() {
-        return listItems.size();
+        return gamesList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        final TextView textViewHead;
-        final TextView textViewDesc;
+        final TextView team1Name;
+        final TextView team2Name;
         final TextView teamOnePrediction;
         final TextView teamTwoPrediction;
 
         ViewHolder(View itemView) {
             super(itemView);
-            textViewHead = itemView.findViewById(R.id.team1Name);
-            textViewDesc = itemView.findViewById(R.id.team2Name);
+            team1Name = itemView.findViewById(R.id.team1Name);
+            team2Name = itemView.findViewById(R.id.team2Name);
             teamOnePrediction = itemView.findViewById(R.id.team1Prediction);
             teamTwoPrediction = itemView.findViewById(R.id.team2Prediction);
         }

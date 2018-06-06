@@ -1,18 +1,16 @@
 package com.betting.tonis.betting_app.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -29,12 +27,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
-    private List<ListItem> listItems;
+    private List<ListItem> gamesList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listItems = new ArrayList<>();
+        gamesList = new ArrayList<>();
+        SharedPreferences settings = getSharedPreferences("X", MODE_PRIVATE);
+        settings.edit().clear().apply();
 
         recyclerView = findViewById(R.id.result_list);
         recyclerView.setHasFixedSize(true);
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Button resultsButton = findViewById(R.id.restart_btn);
         resultsButton.setOnClickListener(v -> {
             Intent i = new Intent(MainActivity.this, ResultsActivity.class);
-            i.putExtra("ITEMLIST", (Serializable) listItems);
+            i.putExtra("ITEMLIST", (Serializable) gamesList);
             startActivity(i);
         });
 
@@ -66,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
                             String team2Name = betsObject.getString("team2");
 
                             ListItem listItem = new ListItem(team1Name, team2Name);
-                            listItems.add(listItem);
+                            gamesList.add(listItem);
                         }
 
-                        adapter = new GamesListAdapter(listItems, MainActivity.this);
+                        adapter = new GamesListAdapter(gamesList, MainActivity.this);
                         recyclerView.setAdapter(adapter);
                     } catch (JSONException e) {
                         e.printStackTrace();

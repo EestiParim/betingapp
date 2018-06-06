@@ -3,6 +3,7 @@ package com.betting.tonis.betting_app.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +22,9 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ResultsActivity extends AppCompatActivity {
 
@@ -41,12 +45,19 @@ public class ResultsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.result_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        loadProducts();
+        loadResults();
 
         if ((bundle != null)
                 && (bundle.getSerializable("ITEMLIST") != null)) {
             listItems = (List<ListItem>) bundle.getSerializable("ITEMLIST");
         }
+
+        SharedPreferences prefs = getSharedPreferences("X", MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        Gson gson = new Gson();
+        String matchesList = gson.toJson(listItems);
+        prefsEditor.putString("MatchesList", matchesList);
+        prefsEditor.apply();
 
         Button restartButton = findViewById(R.id.restart_btn);
         restartButton.setOnClickListener(v -> startActivity(new Intent(ResultsActivity.this, MainActivity.class)));
@@ -55,11 +66,17 @@ public class ResultsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        saveData();
+    }
 
-        SharedPreferences prefs = getSharedPreferences("X", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
+    private void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("X", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("lastActivity", getClass().getName());
-        editor.commit();
+        Gson gson = new Gson();
+        String json = gson.toJson(listItems);
+        editor.putString("gamesList", json);
+        editor.apply();
     }
 
     @Override
@@ -72,7 +89,7 @@ public class ResultsActivity extends AppCompatActivity {
         return listItems;
     }
 
-    private void loadProducts() {
+    private void loadResults() {
         String dataURL = "http://www.mocky.io/v2/5b0f8a4f3000006f001150c1";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, dataURL,
                 response -> {
@@ -102,7 +119,7 @@ public class ResultsActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }, error -> Toast.makeText(ResultsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show());
+                }, error -> Toast.makeText(ResultsActivity.this, error.getMessage(), Toast.LENGTH_LONG).show());
         Volley.newRequestQueue(this).add(stringRequest);
     }
 

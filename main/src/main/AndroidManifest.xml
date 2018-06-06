@@ -21,9 +21,13 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
             </intent-filter>
         </activity>
-        <activity android:name=".ResultsActivity">
+        <activity
+            android:name=".ResultsActivity"
+            android:alwaysRetainTaskState="true"
+            android:exported="true">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -40,7 +44,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
