@@ -10,6 +10,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Cache;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void loadProducts() {
         String dataURL = "http://www.mocky.io/v2/5b0702b42f0000172bc61fe3";
-        String dataURLBad = "http://www.mocky.io/v2/5b10c5fb2f0000770034f0ef";
+        String dataURLBad = "http://www.mocky.io/v2/5b185f473000005a008737f7";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, dataURL,
                 response -> {
                     try {
@@ -100,7 +103,16 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }, error -> Toast.makeText(MainActivity.this, error.getMessage() + "PLEASE CONTACT SUPPORT", Toast.LENGTH_LONG).show());
-        Volley.newRequestQueue(this).add(stringRequest);
+        Request<?> request = Volley.newRequestQueue(this).add(stringRequest).setShouldCache(true);
+        Cache.Entry ca = new Cache.Entry();
+        try {
+            ca.data = request.getBody();
+            ca.ttl = System.currentTimeMillis() + 60 * 1000;
+            ca.softTtl = System.currentTimeMillis() + 60 * 1000;
+            request.setCacheEntry(ca);
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
     }
 
 
