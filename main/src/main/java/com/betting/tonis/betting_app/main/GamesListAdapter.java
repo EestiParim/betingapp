@@ -3,8 +3,8 @@ package com.betting.tonis.betting_app.main;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +44,7 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
             holder.teamTwoPrediction.setText(String.valueOf(listItem.getTeam2pScore()));
         }
 
-        holder.team1Name.setOnClickListener(v -> {
-            Log.d("TAG", "CLICKED ON: " + listItem);
+        holder.cardView.setOnClickListener(v -> {
             final int[] team1Score = {listItem.getTeam1pScore()};
             final int[] team2Score = {listItem.getTeam2pScore()};
             android.support.v7.app.AlertDialog.Builder mBuilder = new android.support.v7.app.AlertDialog.Builder(context);
@@ -66,30 +65,10 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
             teamTwoScore.setText(String.valueOf(team2Score[0]));
             mBuilder.setView(mView);
             final android.support.v7.app.AlertDialog dialog = mBuilder.create();
-            addTeam1.setOnClickListener(v1 -> {
-                team1Score[0]++;
-                teamOneScore.setText(String.valueOf(team1Score[0]));
-            });
-            removeTeam1.setOnClickListener(v12 -> {
-                if (team1Score[0] > 0) {
-                    team1Score[0]--;
-                } else {
-                    Toast.makeText(context, "Score can not be nagative", Toast.LENGTH_LONG).show();
-                }
-                teamOneScore.setText(String.valueOf(team1Score[0]));
-            });
-            addTeam2.setOnClickListener(v13 -> {
-                team2Score[0]++;
-                teamTwoScore.setText(String.valueOf(team2Score[0]));
-            });
-            removeTeam2.setOnClickListener(v14 -> {
-                if (team2Score[0] > 0) {
-                    team2Score[0]--;
-                } else {
-                    Toast.makeText(context, "Score can not be nagative", Toast.LENGTH_LONG).show();
-                }
-                teamTwoScore.setText(String.valueOf(team2Score[0]));
-            });
+            addTeam1.setOnClickListener(v1 -> addScore(team1Score, teamOneScore));
+            removeTeam1.setOnClickListener(v12 -> removeScore(team1Score, teamOneScore));
+            addTeam2.setOnClickListener(v13 -> addScore(team2Score, teamTwoScore));
+            removeTeam2.setOnClickListener(v14 -> removeScore(team2Score, teamTwoScore));
             submitScores.setOnClickListener(v15 -> {
                 listItem.setTeam1pScore(team1Score[0]);
                 listItem.setTeam2pScore(team2Score[0]);
@@ -100,6 +79,21 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
             dialog.show();
         });
     }
+
+    private void removeScore(int[] teamScore, TextView scoreTxtView) {
+        if (teamScore[0] > 0) {
+            teamScore[0]--;
+        } else {
+            Toast.makeText(context, "Score can not be nagative", Toast.LENGTH_LONG).show();
+        }
+        scoreTxtView.setText(String.valueOf(teamScore[0]));
+    }
+
+    public void addScore(int[] teamScore, TextView scoreTxtView) {
+        teamScore[0]++;
+        scoreTxtView.setText(String.valueOf(teamScore[0]));
+    }
+
 
     @Override
     public int getItemCount() {
@@ -112,6 +106,7 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
         final TextView team2Name;
         final TextView teamOnePrediction;
         final TextView teamTwoPrediction;
+        final CardView cardView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -119,6 +114,7 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
             team2Name = itemView.findViewById(R.id.team2Name);
             teamOnePrediction = itemView.findViewById(R.id.team1Prediction);
             teamTwoPrediction = itemView.findViewById(R.id.team2Prediction);
+            this.cardView = itemView.findViewById(R.id.cardView);
         }
     }
 

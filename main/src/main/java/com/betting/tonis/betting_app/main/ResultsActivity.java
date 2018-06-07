@@ -60,7 +60,12 @@ public class ResultsActivity extends AppCompatActivity {
         prefsEditor.apply();
 
         Button restartButton = findViewById(R.id.restart_btn);
-        restartButton.setOnClickListener(v -> startActivity(new Intent(ResultsActivity.this, MainActivity.class)));
+        restartButton.setOnClickListener(v -> {
+            Object mGamesList = new ArrayList<>();
+            Intent mI = new Intent(ResultsActivity.this, MainActivity.class);
+            mI.putExtra("ITEMLIST", (Serializable) mGamesList);
+            startActivity(mI);
+        });
     }
 
     @Override
@@ -85,10 +90,6 @@ public class ResultsActivity extends AppCompatActivity {
         state.putSerializable("ITEMLIST", (Serializable) listItems);
     }
 
-    public List<ListItem> getListItems() {
-        return listItems;
-    }
-
     private void loadResults() {
         String dataURL = "http://www.mocky.io/v2/5b0f8a4f3000006f001150c1";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, dataURL,
@@ -96,7 +97,6 @@ public class ResultsActivity extends AppCompatActivity {
                     try {
                         JSONObject bets = new JSONObject(response);
                         JSONArray teams = bets.getJSONArray("matches");
-                        Log.d("responsestring", response);
                         for (int i = 0; i < teams.length(); i++) {
                             JSONObject betsObject = teams.getJSONObject(i);
                             String team1Name = betsObject.getString("team1");

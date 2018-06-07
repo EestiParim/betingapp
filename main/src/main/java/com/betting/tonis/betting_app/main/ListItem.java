@@ -66,6 +66,7 @@ class ListItem implements Serializable {
     public void setTeam2aScore(int team2aScore) {
         this.team2aScore = team2aScore;
     }
+
     public String getHash(){
         return hash;
     }
