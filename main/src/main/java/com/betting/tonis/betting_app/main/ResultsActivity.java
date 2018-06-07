@@ -3,11 +3,10 @@ package com.betting.tonis.betting_app.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,10 +21,10 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
+@SuppressWarnings("ALL")
 public class ResultsActivity extends AppCompatActivity {
 
 
@@ -37,6 +36,8 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_results);
+        ActionBar actionBar = getSupportActionBar();
+        Objects.requireNonNull(actionBar).hide();
 
         listItems = new ArrayList<>();
         Intent i = getIntent();

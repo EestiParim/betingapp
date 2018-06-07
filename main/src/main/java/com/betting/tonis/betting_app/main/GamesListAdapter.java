@@ -89,7 +89,7 @@ public class GamesListAdapter extends RecyclerView.Adapter<GamesListAdapter.View
         scoreTxtView.setText(String.valueOf(teamScore[0]));
     }
 
-    public void addScore(int[] teamScore, TextView scoreTxtView) {
+    private void addScore(int[] teamScore, TextView scoreTxtView) {
         teamScore[0]++;
         scoreTxtView.setText(String.valueOf(teamScore[0]));
     }

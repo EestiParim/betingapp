@@ -2,6 +2,7 @@ package com.betting.tonis.betting_app.main;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,19 +24,24 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
+@SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
     private List<ListItem> gamesList;
+
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActionBar actionBar = getSupportActionBar();
+        Objects.requireNonNull(actionBar).hide();
         gamesList = new ArrayList<>();
         SharedPreferences settings = getSharedPreferences("X", MODE_PRIVATE);
         settings.edit().clear().apply();
@@ -43,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         Intent i = getIntent();
         gamesList = (List<ListItem>) i.getSerializableExtra("ITEMLIST");
         loadProducts();
-
 
 
         recyclerView = findViewById(R.id.result_list);
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("gamesList", json);
         editor.apply();
     }
+
     private void loadProducts() {
         String dataURL = "http://www.mocky.io/v2/5b0702b42f0000172bc61fe3";
         String dataURLBad = "http://www.mocky.io/v2/5b185f473000005a008737f7";

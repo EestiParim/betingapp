@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Dispatcher extends Activity {
 
-    Class<?> activityClass;
+    private Class<?> activityClass;
     private Object mGamesList;
 
     @Override

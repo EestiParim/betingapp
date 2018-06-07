@@ -13,11 +13,10 @@ import java.util.List;
 public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHolder> {
 
     private final List<ListItem> listItems;
-    private final Context context;
 
     public ResultsAdapter(List<ListItem> listItems, Context context){
         this.listItems = listItems;
-        this.context = context;
+        Context context1 = context;
     }
 
     @NonNull
